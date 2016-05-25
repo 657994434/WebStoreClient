@@ -1,0 +1,35 @@
+#pop_ly_id_div dl,#pop_ly_id_div dt,#pop_ly_id_div dd,#pop_ly_id_div input,.box_os p,.box_os em,#pop_ly_id_div form,.onlineService p{margin:0;padding:0;font-size:12px;text-align:center;}
+#pop_ly_id_div dd,#pop_ly_id_div dt,#pop_ly_id_div dl{list-style:none;display: block ! important;}
+.box_os img{border:0;}
+#pop_ly_id_div input,#pop_ly_id_div textarea{font-size:12px; color:#333; font-family:'lucida grande',taho,verdana,'trebuchet ms',"宋体",sans-serif;}
+:focus{outline:none;}
+
+.onlineService{ background:none; width:39px; *width:84px; height:178px; ;position:fixed; right:0; top:44px; _position:absolute;z-index:9999;}
+.onlineService .ico_os{ background-position:0px 0px; border:1px solid #c7c7c7; cursor:pointer; width:40px; height:143px; float:right;}
+.onlineService .ico_gt{ background-position:right 0; border:1px solid #299ec0; cursor:pointer; width:39px; height:37px; float:right; clear:both;}
+.onlineService .ico_pp{ background-position:right -60px; border:1px solid #81b140; cursor:pointer; width:39px; height:37px; float:right; margin:0 0 1px 0; clear:both;}
+#pop_ly_id_div{ height:360px; overflow:hidden; width:500px; position:fixed; left:50%;margin:-180px 0 0 -250px; top:50%; _position:absolute; z-index:9999;display:none;border:1px solid #ccc;background:#fff;}
+#pop_ly_id_div dl{margin:0 auto;text-align:left}
+#pop_ly_id_div dl dt{border-bottom:1px #ccc solid;height:34px;line-height:24px;text-indent:10px;padding:5px;}
+#pop_ly_id_div dl dt span{float:right;cursor:pointer;font-size:18px;margin-right:5px;}
+#pop_ly_id_div dl dd{padding:10px 5px 0;text-indent:30px;text-align:left;}
+#pop_ly_id_div input, #pop_ly_id_div textarea{background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #DDDDDD;
+    height:28px;
+    line-height:28px;
+    width:340px;color:#999;text-indent:5px;vertical-align:middle;text-align:left;}
+#pop_ly_id_div textarea{ height:87px;line-height:22px;}
+#pop_ly_id_div #msg_vcode{width:80px;}
+#pop_ly_id_div dd img{vertical-align:middle;margin-left:5px;
+    height:22px;width:80px;}
+.msg_button{
+color: #999;
+border:1px solid #dce1e6;
+width: 120px;
+line-height: 30px;
+text-align: center;
+font-weight: bold;
+font-size:16px;
+margin:0 20px 20px 0;
+overflow: hidden;cursor:pointer;text-indent:0px;}
+.box_os .osqq p.wxClassText{margin-bottom:6px;}

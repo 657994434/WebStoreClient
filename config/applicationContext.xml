@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+						http://www.springframework.org/schema/tx
+						http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver">
+		</property>
+		<property name="url"
+			value="jdbc:oracle:thin:@10.211.55.3:1521:orcl">
+		</property>
+		<property name="username" value="watchshop"></property>
+		<property name="password" value="watchshop"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.Oracle9Dialect
+				</prop>
+			</props>
+		</property>
+			<property name="mappingResources">
+			<list>
+				<value>com/watchshop/pojo/Usertable.hbm.xml</value>
+				<value>com/watchshop/pojo/Address.hbm.xml</value>
+				<value>com/watchshop/pojo/Goodstable.hbm.xml</value>
+				<value>com/watchshop/pojo/Goodtype.hbm.xml</value>
+				<value>
+					com/watchshop/pojo/Goodsevaluation.hbm.xml
+				</value>
+				<value>
+					com/watchshop/pojo/Goodsreturntable.hbm.xml
+				</value>
+				<value>com/watchshop/pojo/Imagetable.hbm.xml</value>
+				<value>com/watchshop/pojo/Inventory.hbm.xml</value>
+				<value>
+					com/watchshop/pojo/Purchaserecords.hbm.xml
+				</value>
+				<value>com/watchshop/pojo/Supporter.hbm.xml</value>
+				<value>com/watchshop/pojo/Shopcar.hbm.xml</value>
+				<value>com/watchshop/pojo/Ordertable.hbm.xml</value>
+				<value>com/watchshop/pojo/Orderreturn.hbm.xml</value>
+				<value>com/watchshop/pojo/Moneytable.hbm.xml</value>
+				<value>
+					com/watchshop/pojo/OrderUserGoodsAddress.hbm.xml
+				</value>
+				<value>
+					com/watchshop/pojo/Shopcartview.hbm.xml
+				</value>
+				</list>
+		</property>
+		</bean>
+		<!-- 事务配置 -->
+		<!-- 配置事务管理的bean,这个bean作为公共使用的事务管理的bean，在开发会事先配置好，不需要各个业务模块单独配置 -->
+		<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+			<property name="sessionFactory" ref="sessionFactory"></property>		
+		</bean>
+		
+			<tx:advice id="testAdvice" transaction-manager="transactionManager">
+			<tx:attributes>
+				<tx:method name="doIns" propagation="REQUIRED"/>
+				<tx:method name="doUpd" propagation="REQUIRED"/>
+				<tx:method name="doDel" propagation="REQUIRED"/>
+				<tx:method name="find*" propagation="REQUIRED"/>
+				<tx:method name="LoginForUser" propagation="REQUIRED"/>
+			</tx:attributes>
+		</tx:advice>
+		<!-- 配置参与事务的类 -->
+		<aop:config>
+			<aop:pointcut id="allTestAdvice" expression="execution(* com.watchshop.service.*.*(..))" />
+			<aop:advisor advice-ref="testAdvice" pointcut-ref="allTestAdvice"/>
+		</aop:config>
+		<!-- 配置action -->
+		<!-- 用户信息 -->
+		<bean id="UserInfoAction" class="com.watchshop.action.UserInfoAction">
+			<property name="service" ref="UserTableService"></property>
+		</bean>
+		<bean id="UserTableService" class="com.watchshop.service.impl.UserTableServiceImpl">
+			<property name="dao" ref="UserTableDao"></property>
+		</bean> 
+		<bean id="UserTableDao" class="com.watchshop.dao.impl.UserTableDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		<!-- 货物信息  -->
+		<bean id="GoodsInfoAction" class="com.watchshop.action.GoodsInfoAction">
+			<property name="service" ref="GoodstableService"></property>
+		</bean>
+		<bean id="GoodstableService" class="com.watchshop.service.impl.GoodsTableServiceImpl">
+			<property name="dao" ref="GoodsTableDao"></property>
+		</bean> 
+		<bean id="GoodsTableDao" class="com.watchshop.dao.impl.GoodsTableDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+			<!-- 订单信息  -->
+		<bean id="OrderTableAction" class="com.watchshop.action.OrderTableAction">
+			<property name="service" ref="OrderTableService"></property>
+		</bean>
+		<bean id="OrderTableService" class="com.watchshop.service.impl.OrderTableServiceImpl">
+			<property name="dao" ref="OrderTableDao"></property>
+		</bean> 
+		<bean id="OrderTableDao" class="com.watchshop.dao.impl.OrderTableDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean>
+		<!-- 订单退货 -->
+		<bean id="OrderReturnAction" class="com.watchshop.action.OrderReturnAction">
+			<property name="service" ref="OrderReturnService"></property>
+		</bean>
+		<bean id="OrderReturnService" class="com.watchshop.service.impl.OrderReturnServiceImpl">
+			<property name="dao" ref="OrderReturnDao"></property>
+			<property name="dao2" ref="OrderTableDao"></property>
+			<property name="dao3" ref="MoneyTableDao"></property>
+			<property name="dao4" ref="UserTableDao"></property>
+			<property name="dao5" ref="MoneyTableDao"></property>
+		</bean> 
+		<bean id="OrderReturnDao" class="com.watchshop.dao.impl.OrderReturnDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean> 
+				<!-- 收货地址 -->
+		<bean id="AddressAction" class="com.watchshop.action.AddressAction">
+			<property name="service" ref="AddressService"></property>
+		</bean>
+		<bean id="AddressService" class="com.watchshop.service.impl.AddressServiceImpl">
+			<property name="dao" ref="AddressDao"></property>
+			<property name="dao2" ref="UserTableDao"></property>
+		</bean> 
+		<bean id="AddressDao" class="com.watchshop.dao.impl.AddressDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean> 
+		<!-- 订单评价 -->
+		<bean id="GoodsEvaluationAction" class="com.watchshop.action.GoodsEvaluationAction">
+			<property name="service" ref="GoodsEvaluationService"></property>
+		</bean>
+		<bean id="GoodsEvaluationService" class="com.watchshop.service.impl.GoodsEvaluationServiceImpl">
+			<property name="dao" ref="GoodsEvaluationDao"></property>
+			<property name="dao2" ref="UserTableDao"></property>
+			<property name="dao3" ref="GoodsTableDao"></property>
+		</bean> 
+		<bean id="GoodsEvaluationDao" class="com.watchshop.dao.impl.GoodsEvaluationDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean> 
+				<!-- 余额管理 -->
+		<bean id="MoneyAction" class="com.watchshop.action.MoneyAction">
+			<property name="service" ref="MoneyTableService"></property>
+		</bean>
+		<bean id="MoneyTableService" class="com.watchshop.service.impl.MoneyTableServiceImpl">
+			<property name="dao" ref="MoneyTableDao"></property>
+			<property name="dao2" ref="UserTableDao"></property>
+			<property name="dao3" ref="ShopcartDao"></property>
+			<property name="dao4" ref="AddressDao"></property>
+			<property name="dao5" ref="OrderTableDao"></property>
+		</bean> 
+		<bean id="MoneyTableDao" class="com.watchshop.dao.impl.MoneyTableDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean> 
+					<!-- 购物车管理 -->
+		<bean id="ShopcarAction" class="com.watchshop.action.ShopcarAction">
+			<property name="service" ref="ShopcartService"></property>
+		</bean>
+		<bean id="ShopcartService" class="com.watchshop.service.impl.ShopcartServiceImpl">
+			<property name="dao" ref="ShopcartDao"></property>
+			<property name="userdao" ref="UserTableDao"></property>
+			<property name="goodsdao" ref="GoodsTableDao"></property>
+		</bean> 
+		<bean id="ShopcartDao" class="com.watchshop.dao.impl.ShopcartDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory"></property>
+		</bean> 
+
+</beans>

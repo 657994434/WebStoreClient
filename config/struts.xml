@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!-- 配置为开发模式，一旦文件改动，不需要重启，会立即生效 -->
+	<!--     <constant name="struts.devMode" value="true" /> -->
+    <!-- 把扩展名设置为action 
+    <constant name="struts.action.extension" value="action" />-->
+    <!-- 把主题配置为simple -->
+    <!-- <constant name="struts.ui.theme" value="simple" /> -->
+    <constant name="struts.i18n.encoding" value="utf-8"></constant>
+    <package name="watchshop" namespace="/" extends="json-default"><!-- 所有的action都需要在package包中配置 -->
+		<interceptors>
+			<interceptor name="myinfointercepter" class="com.watchshop.intercepter.MyInfoIntercepter"></interceptor>
+			<interceptor-stack name="lizhi">
+			<interceptor-ref name="defaultStack"></interceptor-ref><!--默认的拦截器-->
+			<interceptor-ref name="myinfointercepter"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<action name="UserInfoAction" class="com.watchshop.action.UserInfoAction">
+		    <interceptor-ref name="lizhi"></interceptor-ref>
+			<result name="success">/jsp/myinfo.jsp</result>
+			<result name="fail">/jsp/login.jsp</result>
+		</action>
+		<action name="UserInfoAction_*" class="UserInfoAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+	<action name="OrderReturnAction_*" class="OrderReturnAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+	<action name="AddressAction_*" class="AddressAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+	<action name="GoodsEvaluationAction_*" class="GoodsEvaluationAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+		<action name="MoneyAction_*" class="MoneyAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+	<action name="shopcart_*" class="ShopcarAction" method="{1}">
+		    	<result name="success" type="json">
+				<param name="root">resultString</param>
+			</result>
+			<result name="fail" type="json">
+			    <param name="root">resultString</param>
+			</result>
+	</action>
+	
+</package>
+<package name="shop" namespace="/" extends="struts-default">
+    <action name="GoodsInfoAction_*" class="GoodsInfoAction" method="{1}">
+		    	<result name="success">/jsp/searchinfo.jsp</result>
+		    	<result name="single">/jsp/single.jsp</result>
+	</action>
+	<action name="OrderTableAction_*" class="OrderTableAction" method="{1}">
+		    	<result name="success">/jsp/myinfo.jsp</result>
+	</action>
+	<action name="Address_*" class="AddressAction" method="{1}">
+		    	<result name="address">/jsp/address.jsp</result>
+	</action>
+
+    </package>
+</struts>
